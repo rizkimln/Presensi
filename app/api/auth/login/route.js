@@ -1,4 +1,4 @@
-import { supabase } from '../../../../lib/supabase';
+import { supabase } from '@/lib/supabase';
 import bcrypt from 'bcryptjs';
 import { NextResponse } from 'next/server';
 
