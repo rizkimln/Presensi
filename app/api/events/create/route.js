@@ -5,8 +5,11 @@ export async function POST(request) {
   try {
     const { name, description, date, start_time, end_time, location, form_fields, created_by } = await request.json();
 
-    // Generate unique QR code string
-    const qrCodeData = `event_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+    // Buat slug unik untuk event
+    const slug = `event-${Date.now()}-${Math.random().toString(36).substr(2, 6)}`;
+
+    // Buat URL untuk QR code berdasarkan base URL dan slug
+    const qrCodeUrl = `${process.env.NEXT_PUBLIC_BASE_URL}/presensi/${slug}`;
 
     const { data: event, error } = await supabase
       .from('events')
@@ -18,7 +21,7 @@ export async function POST(request) {
           start_time,
           end_time,
           location,
-          qr_code: qrCodeData,
+          qr_code: qrCodeUrl, // URL yang nanti ditampilkan dalam QR
           form_fields,
           created_by,
         },
@@ -31,11 +34,12 @@ export async function POST(request) {
     return NextResponse.json(
       {
         event,
-        qrCode: qrCodeData,
+        qrCode: qrCodeUrl,
       },
       { status: 201 }
     );
   } catch (error) {
+    console.error(error);
     return NextResponse.json({ message: 'Failed to create event' }, { status: 500 });
   }
 }

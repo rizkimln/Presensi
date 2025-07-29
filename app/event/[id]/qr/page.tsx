@@ -1,10 +1,12 @@
 'use client';
+
 import { useEffect, useState } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { ArrowLeft, Calendar, MapPin } from 'lucide-react';
 import Link from 'next/link';
 import { useParams } from 'next/navigation';
 import QRScanner from '@/components/QRScanner';
+import QRCode from 'react-qr-code';
 
 export default function EventQRCode() {
   const params = useParams();
@@ -60,6 +62,7 @@ export default function EventQRCode() {
           <h1 className="text-2xl sm:text-3xl font-bold text-slate-800 mb-2">QR Code Presensi</h1>
           <p className="text-sm sm:text-base text-slate-600">QR Code untuk acara presensi karyawan</p>
         </div>
+
         <div className="max-w-4xl mx-auto">
           <Card className="bg-white shadow-md border-0 rounded-xl mb-8">
             <CardContent className="p-4 sm:p-6">
@@ -78,12 +81,15 @@ export default function EventQRCode() {
                       <span className="text-sm sm:text-base">{event.location}</span>
                     </div>
                   </div>
+
+                  {/* QR Code */}
                 </>
               ) : (
                 <div className="text-red-500">Event tidak ditemukan.</div>
               )}
             </CardContent>
           </Card>
+
           {/* QR Code Scanner Component */}
           {event && <QRScanner eventId={eventId} eventName={event.name} attendanceUrl={attendanceUrl} />}
         </div>
